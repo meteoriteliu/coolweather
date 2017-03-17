@@ -2,11 +2,13 @@ package com.meteo.coolweather.db;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * Created by meteo on 2017/3/14.
  */
 
-public class County extends DataSupport {
+public class County extends DataSupport implements Serializable{
     int id;
     int countyId;
 

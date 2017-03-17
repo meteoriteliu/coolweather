@@ -33,6 +33,15 @@ public class CountyFragment extends Fragment {
     private static final String TAG = "CountyFragment";
     int cityId;
     City city;
+    OnListFragmentInteractionListener listener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnListFragmentInteractionListener) {
+            listener = (OnListFragmentInteractionListener) context;
+        }
+    }
 
     @Override
     public void onStart() {
@@ -44,9 +53,8 @@ public class CountyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_province_list, container, false);
-        Log.d(TAG, "onCreateView: 33333");
 
-        ca = new CountyAdapter(countyList);
+        ca = new CountyAdapter(countyList, listener);
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));

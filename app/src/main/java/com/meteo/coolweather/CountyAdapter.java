@@ -17,9 +17,11 @@ import java.util.List;
 public class CountyAdapter extends RecyclerView.Adapter<CountyAdapter.ViewHolder> {
 
     List<County> countyList;
+    OnListFragmentInteractionListener listener;
 
-    public CountyAdapter(List<County> countyList) {
+    public CountyAdapter(List<County> countyList, OnListFragmentInteractionListener listener) {
         this.countyList = countyList;
+        this.listener = listener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -34,7 +36,16 @@ public class CountyAdapter extends RecyclerView.Adapter<CountyAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.area_item, parent, false);
-        ViewHolder vh = new ViewHolder(view);
+        final ViewHolder vh = new ViewHolder(view);
+        if (listener != null) {
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    County county = countyList.get(vh.getAdapterPosition());
+                    listener.onListFragmentInteraction(county);
+                }
+            });
+        }
         return vh;
     }
 

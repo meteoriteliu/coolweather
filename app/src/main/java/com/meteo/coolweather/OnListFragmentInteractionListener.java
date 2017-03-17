@@ -1,6 +1,7 @@
 package com.meteo.coolweather;
 
 import com.meteo.coolweather.db.City;
+import com.meteo.coolweather.db.County;
 import com.meteo.coolweather.db.Province;
 
 /**
@@ -10,4 +11,5 @@ import com.meteo.coolweather.db.Province;
 public interface OnListFragmentInteractionListener {
     void onListFragmentInteraction(Province item);
     void onListFragmentInteraction(City item);
+    void onListFragmentInteraction(County item);
 }
