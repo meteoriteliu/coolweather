@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -83,16 +85,22 @@ public class ProvinceFragment extends Fragment {
         pa = new ProvinceAdapter(provinceList, listener);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(pa);
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+
+        Context context = view.getContext();
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
+        recyclerView.setAdapter(pa);
+
+        TextView textView = (TextView) view.findViewById(R.id.title_text);
+        textView.setText("中国");
+
+        Button backButton = (Button) view.findViewById(R.id.back);
+        backButton.setVisibility(View.GONE);
 
         initArea();
         return view;

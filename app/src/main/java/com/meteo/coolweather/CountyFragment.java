@@ -10,9 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.meteo.coolweather.db.City;
 import com.meteo.coolweather.db.County;
+import com.meteo.coolweather.db.Province;
 
 import org.litepal.crud.DataSupport;
 
@@ -29,6 +32,7 @@ public class CountyFragment extends Fragment {
     List<County> countyList = new ArrayList<>();
     private static final String TAG = "CountyFragment";
     int cityId;
+    City city;
 
     @Override
     public void onStart() {
@@ -43,12 +47,21 @@ public class CountyFragment extends Fragment {
         Log.d(TAG, "onCreateView: 33333");
 
         ca = new CountyAdapter(countyList);
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(ca);
-        }
+        Context context = view.getContext();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(ca);
+
+        TextView textView = (TextView) view.findViewById(R.id.title_text);
+        textView.setText(city.getCityName());
+
+        Button backButton = (Button) view.findViewById(R.id.back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
         return view;
     }
 
@@ -69,6 +82,7 @@ public class CountyFragment extends Fragment {
 
         if (getArguments() != null) {
             cityId = getArguments().getInt("cityId");
+            city = DataSupport.where("cityCode = ?", String.valueOf(cityId)).find(City.class).get(0);
         }
     }
 

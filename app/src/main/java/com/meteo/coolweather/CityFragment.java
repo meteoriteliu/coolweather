@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.meteo.coolweather.db.City;
+import com.meteo.coolweather.db.Province;
 
 import org.litepal.crud.DataSupport;
 
@@ -29,6 +32,7 @@ public class CityFragment extends Fragment {
     List<City> cityList = new ArrayList<>();
     private static final String TAG = "CityFragment";
     int provinceId;
+    Province province;
 
     OnListFragmentInteractionListener listener;
 
@@ -53,12 +57,21 @@ public class CityFragment extends Fragment {
         Log.d(TAG, "onCreateView: 33333");
 
         ca = new CityAdapter(cityList, listener);
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(ca);
-        }
+        Context context = view.getContext();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(ca);
+
+        TextView textView = (TextView) view.findViewById(R.id.title_text);
+        textView.setText(province.getProvinceName());
+
+        Button backButton = (Button) view.findViewById(R.id.back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getFragmentManager().popBackStack();
+            }
+        });
         return view;
     }
 
@@ -79,6 +92,7 @@ public class CityFragment extends Fragment {
 
         if (getArguments() != null) {
             provinceId = getArguments().getInt("provinceId");
+            province = DataSupport.where("provinceCode = ?", String.valueOf(provinceId)).find(Province.class).get(0);
         }
     }
 
